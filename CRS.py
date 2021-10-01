@@ -1,4 +1,11 @@
-from numpy.random import randint, seed
+from numpy.random import randint as ri, seed as sd
+from numba import njit
+@njit
+def randint(x, y):
+    return ri(x, y)
+@njit
+def seed(s):
+    sd(s)
 def shuffle(array, s):
     seed(s)
     l = len(array)
