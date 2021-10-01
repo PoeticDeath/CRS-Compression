@@ -6,12 +6,14 @@ from os import remove
 from psutil import cpu_count
 def CompressMT(Threadsnm, srtstr, Threads, srtstrsorted, ANS, CUR, x):
     try:
+        v = 1000
         srtstr = bytearray(srtstr)
         for w in range(int(256**7/Threads*(Threadsnm-1)), int(256**7/Threads*Threadsnm)):
             if shuffle(bytearray(srtstrsorted), w) == srtstr:
                 ANS[1] = int(w)
                 break
-            CUR[1] += 1
+            if w % v == 0:
+                CUR[1] += v
     except:
         exit()
 def Decompress():
