@@ -2,7 +2,7 @@ from CRS import shuffle
 from sys import argv, exit
 from multiprocessing import Process as Thread, Manager
 from time import time
-from os import remove
+from os import remove, system
 from psutil import cpu_count
 def CompressMT(Threadsnm, srtstr, Threads, srtstrsorted, ANS, CUR, x):
     try:
@@ -21,6 +21,9 @@ def Decompress():
         Filename = argv[2]
     except IndexError:
         Filename = input("What would you like the file to be called? : ")
+    system('mv ' + Filename + ' ' + Filename+'.rle')
+    system('rle -x ' + Filename+'.rle' + ' ' + Filename)
+    system('rm ' + Filename+'.rle')
     OpenFile = open(Filename, "rb")
     Data = OpenFile.read()
     OpenFile.close()
@@ -74,6 +77,8 @@ def Compress():
     OpenFile = open(Filename, "wb")
     OpenFile.write(z + srtstrsorted)
     OpenFile.close()
+    system('rle -c ' + Filename + ' ' + Filename+'.rle')
+    system('mv ' + Filename+'.rle' + ' ' + Filename)
 def Main():
     try:
         FileAction = argv[1]
