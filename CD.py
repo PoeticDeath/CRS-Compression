@@ -46,7 +46,7 @@ def Compress():
     srtstr = OpenFile.read()
     srtstrsorted = bytes(sorted(srtstr))
     srtstrlen = len(srtstr)
-    Threads = cpu_count(logical=False)
+    Threads = cpu_count(logical=True)
     try:
         x = int(argv[3])
     except IndexError:
