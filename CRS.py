@@ -105,7 +105,7 @@ def Main():
         Start = time()
         Compress()
         End = time() - Start
-        print(str('\n' + 'Compression took ' + str(int(End)) + ' seconds.'))
+        print(str('Compression took ' + str(int(End)) + ' seconds.'))
         print('Compressed')
     if (FileAction == str('2')):
         print('Decompressing')
