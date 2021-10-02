@@ -34,11 +34,11 @@ def Decompress():
     try:
         Filename = argv[2]
     except IndexError:
-        Filename = input("What would you like the file to be called? : ")
+        Filename = input('What would you like the file to be called? : ')
     system('mv ' + Filename + ' ' + Filename+'.rle')
     system('rle -x ' + Filename+'.rle' + ' ' + Filename)
     system('rm ' + Filename+'.rle')
-    OpenFile = open(Filename, "rb")
+    OpenFile = open(Filename, 'rb')
     Data = OpenFile.read()
     OpenFile.close()
     z = Data[:7]
@@ -47,7 +47,7 @@ def Decompress():
     Data = bytes(shuffle(bytearray(Bytes), z))
     remove(Filename)
     Filename = Filename[:-4]
-    OpenFile = open(Filename, "wb")
+    OpenFile = open(Filename, 'wb')
     OpenFile.write(Data)
     OpenFile.close()
 def Compress():
@@ -55,8 +55,8 @@ def Compress():
     try:
         Filename = argv[2]
     except IndexError:
-        Filename = input("What file would you like to compress? : ")
-    OpenFile = open(Filename, "rb")
+        Filename = input('What file would you like to compress? : ')
+    OpenFile = open(Filename, 'rb')
     srtstr = OpenFile.read()
     srtstrsorted = bytes(sorted(srtstr))
     srtstrlen = len(srtstr)
@@ -68,16 +68,16 @@ def Compress():
     Threadsnm = 1
     ANS = manager.dict()
     CUR = manager.dict()
-    ANS[1] = ""
+    ANS[1] = ''
     CUR[1] = 0 + x
     Start = time()
     while (Threadsnm <= Threads):
         Thread(target=CompressMT, args=(Threadsnm, srtstr, Threads, srtstrsorted, ANS, CUR, x), daemon=True).start()
-        print("Thread " + str(Threadsnm) + " started.")
+        print('Thread ' + str(Threadsnm) + ' started.')
         Threadsnm += 1
-    while (ANS[1] == ""):
+    while (ANS[1] == ''):
         CURTIME = time() - Start
-        print(str(CUR[1]/256**7*100) + '% Complete,', f'{CUR[1]:,}' + ' Checked, ' + f'{int(int(CUR[1]-x)//CURTIME):,}' + ' Checked per Second.', end="\r")
+        print(str(CUR[1]/256**7*100) + '% Complete,', f'{CUR[1]:,}' + ' Checked, ' + f'{int(int(CUR[1]-x)//CURTIME):,}' + ' Checked per Second.', end='\r')
         if CUR[1] == 256**7:
             print('File not compressible.')
             exit()
@@ -86,9 +86,9 @@ def Compress():
     z = int(ANS[1])
     OpenFile.close()
     remove(Filename)
-    Filename = Filename + ".CRS"
+    Filename = Filename + '.CRS'
     z = z.to_bytes(7, 'big')
-    OpenFile = open(Filename, "wb")
+    OpenFile = open(Filename, 'wb')
     OpenFile.write(z + srtstrsorted)
     OpenFile.close()
     system('rle -c ' + Filename + ' ' + Filename+'.rle')
@@ -99,20 +99,20 @@ def Main():
     except IndexError:
         FileAction = 0
     if (FileAction == 0):
-        FileAction = input("Would you like to compress or decompress the file? Enter 1 to Compress or 2 to Decompress: ")
-    if (FileAction == str("1")):
-        print("Compressing")
+        FileAction = input('Would you like to compress or decompress the file? Enter 1 to Compress or 2 to Decompress: ')
+    if (FileAction == str('1')):
+        print('Compressing')
         Start = time()
         Compress()
         End = time() - Start
-        print(str("\n" + "Compression took " + str(int(End)) + " seconds."))
-        print("Compressed")
-    if (FileAction == str("2")):
-        print("Decompressing")
+        print(str('\n' + 'Compression took ' + str(int(End)) + ' seconds.'))
+        print('Compressed')
+    if (FileAction == str('2')):
+        print('Decompressing')
         Start = time()
         Decompress()
         End = time() - Start
-        print(str("Decompression took " + str(int(End)) + " seconds."))
-        print("Decompressed")
+        print(str('Decompression took ' + str(int(End)) + ' seconds.'))
+        print('Decompressed')
 if __name__ == '__main__':
     Main()
