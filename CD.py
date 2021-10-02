@@ -17,17 +17,16 @@ def CompressMT(Threadsnm, srtstr, Threads, srtstrsorted, ANS, CUR, x):
     except:
         exit()
 def Decompress():
-    from ast import literal_eval
     try:
         Filename = argv[2]
     except IndexError:
         Filename = input("What would you like the file to be called? : ")
-    OpenFile = open(Filename, "r")
-    Data = literal_eval(OpenFile.read())
+    OpenFile = open(Filename, "rb")
+    Data = OpenFile.read()
     OpenFile.close()
-    z = Data[0]
-    z = int(str(z), 16)
-    Bytes = Data[1]
+    z = Data[:7]
+    z = int.from_bytes(z, 'big')
+    Bytes = Data[7:]
     Data = bytes(shuffle(bytearray(Bytes), z))
     remove(Filename)
     Filename = Filename[:-4]
@@ -71,9 +70,9 @@ def Compress():
     OpenFile.close()
     remove(Filename)
     Filename = Filename + ".CRS"
-    z = hex(z)
-    OpenFile = open(Filename, "w")
-    OpenFile.write(str([z, srtstrsorted]))
+    z = z.to_bytes(7, 'big')
+    OpenFile = open(Filename, "wb")
+    OpenFile.write(z + srtstrsorted)
     OpenFile.close()
 def Main():
     try:
