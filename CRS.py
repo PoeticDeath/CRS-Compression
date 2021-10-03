@@ -1,8 +1,9 @@
+import zlib
+from os import remove
 from time import time
 from numba import njit
 from sys import argv, exit
 from psutil import cpu_count
-from os import remove, system
 from numpy.random import randint as ri, seed as sd
 from multiprocessing import Process as Thread, Manager
 @njit
@@ -35,11 +36,8 @@ def Decompress():
         Filename = argv[2]
     except IndexError:
         Filename = input('What would you like the file to be called? : ')
-    system('mv ' + Filename + ' ' + Filename+'.rle')
-    system('rle -x ' + Filename+'.rle' + ' ' + Filename)
-    system('rm ' + Filename+'.rle')
     OpenFile = open(Filename, 'rb')
-    Data = OpenFile.read()
+    Data = zlib.decompress(OpenFile.read())
     OpenFile.close()
     z = Data[:7]
     z = int.from_bytes(z, 'big')
@@ -89,10 +87,8 @@ def Compress():
     Filename = Filename + '.CRS'
     z = z.to_bytes(7, 'big')
     OpenFile = open(Filename, 'wb')
-    OpenFile.write(z + srtstrsorted)
+    OpenFile.write(zlib.compress(z + srtstrsorted, level=9))
     OpenFile.close()
-    system('rle -c ' + Filename + ' ' + Filename+'.rle')
-    system('mv ' + Filename+'.rle' + ' ' + Filename)
 def Main():
     try:
         FileAction = argv[1]
